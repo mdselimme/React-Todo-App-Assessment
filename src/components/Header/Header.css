@@ -1,0 +1,17 @@
+.header-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 10px;
+}
+
+.header-menu{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.header-menu-child{
+    font-size: 1rem;
+    font-weight: 400;
+}

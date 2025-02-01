@@ -1,0 +1,14 @@
+
+/* Register page css  */
+
+.auth-main-box{
+    width: 650px;
+    padding: 40px;
+    margin: 0 auto;
+}
+
+.input-box{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
