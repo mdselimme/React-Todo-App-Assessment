@@ -1,11 +1,14 @@
 
+import AddToDoData from "../components/AddToDoData/AddToDoData";
+
+
 
 const Home = () => {
-    return (
-        <div>
-            <h1>Home</h1>
-        </div>
-    );
+   return (
+    <>
+        <AddToDoData></AddToDoData>   
+    </>
+   )
 };
 
 export default Home;

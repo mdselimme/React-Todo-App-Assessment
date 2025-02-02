@@ -22,7 +22,7 @@ const Header = () => {
         <header className="container">
             <div className="header-box">
                 <div className="header-logo">
-                   <Link to={"/"}> <h1>MineToDo</h1></Link>
+                   <Link style={{fontWeight:"800", fontSize:"1.4rem", color:"black"}}  to={"/"}> <h1>MineToDo</h1></Link>
                 </div>
                 <div className="header-menu">
                     <NavLink className="header-menu-child" to={"/home"}><Button>Home</Button></NavLink>
