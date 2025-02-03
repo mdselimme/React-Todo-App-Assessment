@@ -40,13 +40,7 @@ const HomeDataShow = () => {
       </div>
       <div>
       <TodosDisplay></TodosDisplay>
-        <Typography
-          sx={{ fontSize: "30px", textAlign: "center" }}
-          variant="h1"
-          gutterBottom
-        >
-          No Data Found
-        </Typography>
+        
       </div>
     </section>
   );

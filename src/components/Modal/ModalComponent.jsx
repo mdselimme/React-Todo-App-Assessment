@@ -1,9 +1,8 @@
 import { Box, Button, Modal, TextField } from "@mui/material";
 import { bool, func } from "prop-types";
 import Swal from "sweetalert2";
-import useAuth from "../../AuthProvider/useAuth";
 import { useNavigate } from "react-router";
-// import Swal from "sweetalert2";
+
 
 const ModalComponent = ({ open, handleClose }) => {
   const style = {
@@ -17,7 +16,7 @@ const ModalComponent = ({ open, handleClose }) => {
     boxShadow: 24,
   };
 
-  const {fecthDataCalled} = useAuth();
+
   const navigate = useNavigate();
 
   const addToDoTaskDataFunc = async (e) => {
@@ -47,10 +46,12 @@ const ModalComponent = ({ open, handleClose }) => {
       body: JSON.stringify(body),
     });
     const data = await resp.json();
-    if (data.created_at) {
+    console.log(data.id)
+    if (data.id > 0) {
       navigate("/");
-      fecthDataCalled();
+      handleClose();
       Swal.fire({
+        position:"top-end",
         icon: "success",
         title: "Data Added Successfully",
         showConfirmButton: false,

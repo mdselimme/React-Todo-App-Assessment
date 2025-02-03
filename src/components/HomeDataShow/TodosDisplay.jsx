@@ -7,16 +7,52 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from "@mui/material";
-import { AuthContext } from "../../AuthProvider/AuthProvider";
+import Swal from "sweetalert2";
+// import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const TodosDisplay = () => {
 
-    const {todos} = useContext(AuthContext);
+    
+  const [todos, setTodos] = useState([]);
 
+  useEffect(()=>{
+    const fetchData = async () =>{
+      const resp = await fetch('http://3.109.211.104:8001/todos');
+    const data = await resp.json();
+    console.log(data)
+    setTodos(data)
+    }
+    fetchData();
+  },[]);
+
+  console.log(todos)
+
+  const handleDeleteData = async (id) =>{
+    console.log("delete")
+    const resp = await fetch(`http://3.109.211.104:8001/todo/${id}`,{
+      method:"DELETE"
+    })
+    const data = await resp.json();
+    if(data.message){
+      Swal.fire({ 
+            position: "top-end",
+            icon: "success",
+            title: "Task Deleted Successfully",
+            showConfirmButton: false,
+            timer: 1500                                        
+        });           
+  }};
 
   return (
     <>
-    <TableContainer sx={{marginTop:"60px", border:"1px solid orange"}} component={Paper}>
+   {
+    todos.length < 0 ? <Typography
+          sx={{ fontSize: "30px", textAlign: "center" }}
+          variant="h1"
+          gutterBottom
+        >
+          No Data Found
+        </Typography> :  <TableContainer sx={{marginTop:"60px", border:"1px solid orange"}} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -41,7 +77,7 @@ const TodosDisplay = () => {
               <TableCell align="center">{td.deadline}</TableCell>
               <TableCell align="center">{td.priority}</TableCell>
               <TableCell align="center">
-            <Button sx={{padding:"5px 10px", marginRight:"5px"}} type="submit" variant="contained">Delete</Button>
+            <Button onClick={()=>handleDeleteData(td.id)} sx={{padding:"5px 10px", marginRight:"5px"}} type="submit" variant="contained">Delete</Button>
             <Button sx={{padding:"5px 10px"}} type="submit" variant="contained">Update</Button>
               </TableCell>
             </TableRow>
@@ -49,6 +85,7 @@ const TodosDisplay = () => {
         </TableBody>
       </Table>
     </TableContainer>
+   }
     </>
   );
 };
