@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://3.109.211.104:8001/', // Replace with your API URL
+        target: 'https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/', // Replace with your API URL
         changeOrigin: true,
         secure: true, // Set to true if using HTTPS
         rewrite: (path) => path.replace(/^\/api/, ''),

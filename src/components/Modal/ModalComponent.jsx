@@ -2,6 +2,7 @@ import { Box, Button, Modal, TextField } from "@mui/material";
 import { bool, func } from "prop-types";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import useAuth from "../../AuthProvider/useAuth";
 
 
 const ModalComponent = ({ open, handleClose }) => {
@@ -16,6 +17,7 @@ const ModalComponent = ({ open, handleClose }) => {
     boxShadow: 24,
   };
 
+  const {setDataLoad} = useAuth();
 
   const navigate = useNavigate();
 
@@ -38,7 +40,7 @@ const ModalComponent = ({ open, handleClose }) => {
       priority,
     };
     console.log(body);
-    const resp = await fetch("http://3.109.211.104:8001/todo", {
+    const resp = await fetch("https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todo", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -47,9 +49,10 @@ const ModalComponent = ({ open, handleClose }) => {
     });
     const data = await resp.json();
     console.log(data.id)
-    if (data.id > 0) {
+    if (data.id) {
       navigate("/");
       handleClose();
+      setDataLoad(true);
       Swal.fire({
         position:"top-end",
         icon: "success",
@@ -57,6 +60,7 @@ const ModalComponent = ({ open, handleClose }) => {
         showConfirmButton: false,
         timer: 1500,
       });
+      
     }
     e.target.reset();
   };

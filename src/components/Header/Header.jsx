@@ -2,13 +2,16 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import "./Header.css";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
+import useAuth from "../../AuthProvider/useAuth";
 
 const Header = () => {
   const [hideAuth, setHideAuth] = useState(false);
-  const [authBtnShow, setAuthBtnShow] = useState(false);
+  
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const {setTodos,setAuthBtnShow,authBtnShow} = useAuth();
 
   useEffect(() => {
     if (location.pathname === "/register" || location.pathname === "/login") {
@@ -29,6 +32,8 @@ const Header = () => {
 
   const logOutFunc = () => {
     localStorage.removeItem("auth");
+    setAuthBtnShow(false);
+    setTodos([]);
     navigate("/login");
   };
 

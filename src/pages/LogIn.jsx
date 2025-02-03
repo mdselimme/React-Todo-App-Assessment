@@ -1,11 +1,12 @@
 import { Button, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import useAuth from "../AuthProvider/useAuth";
 
 
 const LogIn = () => {
     const navigate = useNavigate();
-
+    const {setAuthBtnShow,setDataLoad} = useAuth();
 
     const logInAccountFunc = async (e) =>{
             e.preventDefault();
@@ -19,7 +20,7 @@ const LogIn = () => {
                 "email": email,
                 "password": password,
             };
-            const resp = await fetch("http://3.109.211.104:8001/login",{
+            const resp = await fetch("https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/login",{
                 method:"POST",
                 headers:{
                     "Content-type":"application/json"
@@ -27,10 +28,11 @@ const LogIn = () => {
                 body: JSON.stringify(body)
             });
             const data = await resp.json();
-            console.log(data)
             if(data.detail[0].input.email){
-                localStorage.setItem("auth", JSON.stringify(data.detail[0].input.email));
-                navigate("/home")
+                localStorage.setItem("auth", JSON.stringify({email:data.detail[0].input.email}));
+                navigate("/home");
+                setAuthBtnShow(true);
+                setDataLoad(true);
                 Swal.fire({
                     position: "top-end",
                     icon: "success",

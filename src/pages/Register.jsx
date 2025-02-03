@@ -1,10 +1,12 @@
 import {  Button, TextField } from "@mui/material";
 import "./Pages.css";
 import Swal from "sweetalert2";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 
 const Register = () => {
+
+    const navigate = useNavigate();
 
     const registerAccountFunc = async (e) =>{
         e.preventDefault();
@@ -24,7 +26,7 @@ const Register = () => {
             "password": password,
             "profile_picture": ""
         };
-        const resp = await fetch("http://3.109.211.104:8001/register",{
+        const resp = await fetch("https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/register",{
             method:"POST",
             headers:{
                 "Content-type":"application/json"
@@ -32,8 +34,8 @@ const Register = () => {
             body: JSON.stringify(body)
         });
         const data = await resp.json();
-        console.log(data)
         if(data.message){
+            navigate("/")
             Swal.fire({
                 position: "top-end",
                 icon: "success",

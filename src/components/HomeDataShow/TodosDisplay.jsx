@@ -6,34 +6,24 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Swal from "sweetalert2";
-// import { AuthContext } from "../../AuthProvider/AuthProvider";
+import useAuth from "../../AuthProvider/useAuth";
 
 const TodosDisplay = () => {
 
-    
-  const [todos, setTodos] = useState([]);
-
-  useEffect(()=>{
-    const fetchData = async () =>{
-      const resp = await fetch('http://3.109.211.104:8001/todos');
-    const data = await resp.json();
-    console.log(data)
-    setTodos(data)
-    }
-    fetchData();
-  },[]);
+  const {todos, setDataLoad, authData} = useAuth();
 
   console.log(todos)
 
   const handleDeleteData = async (id) =>{
     console.log("delete")
-    const resp = await fetch(`http://3.109.211.104:8001/todo/${id}`,{
+    const resp = await fetch(`https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todo/${id}`,{
       method:"DELETE"
     })
     const data = await resp.json();
     if(data.message){
+      setDataLoad(true);
       Swal.fire({ 
             position: "top-end",
             icon: "success",
@@ -46,12 +36,12 @@ const TodosDisplay = () => {
   return (
     <>
    {
-    todos.length < 0 ? <Typography
+    todos.length === 0 ? <Typography
           sx={{ fontSize: "30px", textAlign: "center" }}
           variant="h1"
           gutterBottom
         >
-          No Data Found
+          No Task Added ! Please Add an Task &#8594;
         </Typography> :  <TableContainer sx={{marginTop:"60px", border:"1px solid orange"}} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
