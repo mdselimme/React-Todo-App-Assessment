@@ -1,14 +1,11 @@
-
-import AddToDoData from "../components/AddToDoData/AddToDoData";
-
-
+import HomeDataShow from "../components/HomeDataShow/HomeDataShow";
 
 const Home = () => {
-   return (
+  return (
     <>
-        <AddToDoData></AddToDoData>   
+      <HomeDataShow></HomeDataShow>
     </>
-   )
+  );
 };
 
 export default Home;

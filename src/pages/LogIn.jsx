@@ -1,25 +1,23 @@
 import { Button, TextField } from "@mui/material";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 
 const LogIn = () => {
+    const navigate = useNavigate();
+
+
     const logInAccountFunc = async (e) =>{
             e.preventDefault();
+            // find form all value 
             const form = e.target;
-            
             const email = form.email.value;
-           
-          
             const password = form.password.value;
          
-            console.log( email, password)
+            // Log in information data Body 
             const body = {
-               
                 "email": email,
-            
                 "password": password,
-               
             };
             const resp = await fetch("http://3.109.211.104:8001/login",{
                 method:"POST",
@@ -31,6 +29,8 @@ const LogIn = () => {
             const data = await resp.json();
             console.log(data)
             if(data.detail[0].input.email){
+                localStorage.setItem("auth", JSON.stringify(data.detail[0].input.email));
+                navigate("/home")
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -38,6 +38,7 @@ const LogIn = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
+
             }
             e.target.reset();
         }
