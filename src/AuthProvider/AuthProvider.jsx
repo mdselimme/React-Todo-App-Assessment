@@ -9,10 +9,11 @@ const AuthProvider = ({ children }) => {
   const [dataLoad, setDataLoad] = useState(false);
   const [authData, setAuthData] = useState(null);
   const [todos, setTodos] = useState([]);
-  const data = JSON.parse(localStorage.getItem("auth"));
+
 
   useEffect(() => {
-    if (data.email) {
+    const data = JSON.parse(localStorage.getItem("auth"));
+    if (data) {
       setAuthData(data);
     } else {
       setAuthData(null)

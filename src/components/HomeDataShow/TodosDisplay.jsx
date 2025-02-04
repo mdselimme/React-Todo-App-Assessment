@@ -67,7 +67,7 @@ const TodosDisplay = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Error",
+        title: `${error.message}`,
         text: "Failed to send request. Check your network connection.",
       });
     }
@@ -140,6 +140,7 @@ const TodosDisplay = () => {
       icon: "success",
       title: "Sucessfully",
       text: "Task Already Completed.",
+      timer: 1500,
       showConfirmButton: false,
     });
   }

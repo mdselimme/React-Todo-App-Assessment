@@ -7,12 +7,14 @@ import useAuth from "../../AuthProvider/useAuth";
 
 const HomeDataShow = () => {
   const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const { authData, authBtnShow } = useAuth();
 
+  // Add To Task Button Function 
   const addTaskHandleButton = () => {
     const data = JSON.parse(localStorage.getItem("auth"));
     if (data) {
