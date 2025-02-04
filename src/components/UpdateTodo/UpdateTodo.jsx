@@ -7,7 +7,6 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 
 const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
-    console.log(todoId)
 
     const { todos, setDataLoad } = useAuth();
 
@@ -28,23 +27,38 @@ const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
 
     const updateToDoTaskDataFunc = async (e) => {
         e.preventDefault();
+
         // find value from input field 
         const form = e.target;
         const title = form.title.value;
         const description = form.description.value;
-        const deadlineInput = form.deadline.value;
-        const deadline = new Date(deadlineInput).toISOString();
-        const priority = parseInt(form.priority.value);
 
-        // data object 
+        // Validate and parse deadline
+        const deadlineInput = form.deadline.value;
+        const deadline = new Date(deadlineInput);
+        const priority = form.priority.value;
+        const is_completed = false;
+        console.log(priority)
+
+        if (isNaN(deadline)) {
+            Swal.fire({
+                icon: "error",
+                title: "Invalid Date",
+                text: "The deadline is not a valid date.",
+            });
+            return;
+        }
+        const deadlineISO = deadline.toISOString();
+        // Create data object
         const body = {
             title,
             description,
-            deadline,
+            deadline: deadlineISO,
             priority,
+            is_completed
         };
 
-        console.log("body", body)
+        console.log("body", body);
 
         try {
             const resp = await fetch(
@@ -57,19 +71,20 @@ const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
                     body: JSON.stringify(body),
                 }
             );
+
             const data = await resp.json();
             if (resp.ok) {
-                // navigate("/");
                 hadleCloseFunc();
                 setDataLoad(true);
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "Data Added Successfully",
+                    title: "Data Updated Successfully",
                     showConfirmButton: false,
                     timer: 1500,
                 });
             } else {
+                console.error('API Response:', data);
                 hadleCloseFunc();
                 Swal.fire({
                     icon: "error",
@@ -84,9 +99,8 @@ const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
                 text: "Failed to send request. Check your network connection.",
             });
         }
-
-
     };
+
 
     return (
         <div>

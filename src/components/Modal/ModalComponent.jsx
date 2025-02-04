@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField,  } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField, } from "@mui/material";
 import { bool, func } from "prop-types";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
@@ -21,69 +21,71 @@ const ModalComponent = ({ open, handleClose }) => {
     boxShadow: 24,
   };
 
-  const {setDataLoad} = useAuth();
-  
+  const { setDataLoad } = useAuth();
+
   const navigate = useNavigate();
 
   // Add to Task Data Function 
   const addToDoTaskDataFunc = async (e) => {
-  e.preventDefault();
-  // find value from input field 
-  const form = e.target;
-  const title = form.title.value;
-  const description = form.description.value;
-  const deadlineInput = form.deadline.value;
-  const deadline = new Date(deadlineInput).toISOString();
-  const priority = form.priority.value; 
+    e.preventDefault();
+    // find value from input field 
+    const form = e.target;
+    const title = form.title.value;
+    const description = form.description.value;
+    const deadlineInput = form.deadline.value;
+    const deadline = new Date(deadlineInput).toISOString();
+    const priority = form.priority.value;
 
-  // data object 
-  const body = {
-    title,
-    description,
-    deadline,
-    priority,
-  };
+    // data object 
+    const body = {
+      title,
+      description,
+      deadline,
+      priority,
+    };
 
-  try {
-    const resp = await fetch(
-      "https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todo",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
+    console.log("add to do", body)
+
+    try {
+      const resp = await fetch(
+        "https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todo",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+      const data = await resp.json();
+      if (resp.ok) {
+        navigate("/");
+        handleClose();
+        setDataLoad(true);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Data Added Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.message || "Something went wrong!",
+        });
       }
-    );
-    const data = await resp.json();
-    if (resp.ok) {
-      navigate("/");
-      handleClose();
-      setDataLoad(true);
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Data Added Successfully",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } else {
+    } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: data.message || "Something went wrong!",
+        text: "Failed to send request. Check your network connection.",
       });
     }
-  } catch (error) {
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "Failed to send request. Check your network connection.",
-    });
-  }
 
-  e.target.reset();
-};
+    e.target.reset();
+  };
 
   return (
     <div>
@@ -114,28 +116,28 @@ const ModalComponent = ({ open, handleClose }) => {
                   variant="outlined"
                 />
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Priority</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Priority"
-                        name="priority"
-                        defaultValue={1}
-                      >
-                        <MenuItem value="1">1</MenuItem>
-                        <MenuItem value="2">2</MenuItem>
-                        <MenuItem value="3">3</MenuItem>
-                        <MenuItem value="4">4</MenuItem>
-                        <MenuItem value="5">5</MenuItem>
-                        <MenuItem value="6">6</MenuItem>
-                        <MenuItem value="7">7</MenuItem>
-                        <MenuItem value="8">8</MenuItem>
-                        <MenuItem value="9">9</MenuItem>
-                        <MenuItem value="10">10</MenuItem>
-                      </Select>
-                    </FormControl>
+                  <InputLabel id="demo-simple-select-label">Priority</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Priority"
+                    name="priority"
+                    defaultValue={1}
+                  >
+                    <MenuItem value="1">1</MenuItem>
+                    <MenuItem value="2">2</MenuItem>
+                    <MenuItem value="3">3</MenuItem>
+                    <MenuItem value="4">4</MenuItem>
+                    <MenuItem value="5">5</MenuItem>
+                    <MenuItem value="6">6</MenuItem>
+                    <MenuItem value="7">7</MenuItem>
+                    <MenuItem value="8">8</MenuItem>
+                    <MenuItem value="9">9</MenuItem>
+                    <MenuItem value="10">10</MenuItem>
+                  </Select>
+                </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DateTimePicker name="deadline" defaultValue={dayjs()} />
+                  <DateTimePicker name="deadline" defaultValue={dayjs()} />
                 </LocalizationProvider>
                 <Button
                   style={{ padding: "10px 0" }}
