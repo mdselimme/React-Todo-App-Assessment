@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound.jsx";
 import StopWatch from "./pages/StopWatch.jsx";
 import AuthProvider from "./AuthProvider/AuthProvider.jsx";
 
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>

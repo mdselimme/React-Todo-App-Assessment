@@ -6,12 +6,12 @@ import useAuth from "../../AuthProvider/useAuth";
 
 const Header = () => {
   const [hideAuth, setHideAuth] = useState(false);
-  
+
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const {setTodos,setAuthBtnShow,authBtnShow,setAuthData} = useAuth();
+  const { setTodos, setAuthBtnShow, authBtnShow } = useAuth();
 
   useEffect(() => {
     if (location.pathname === "/register" || location.pathname === "/login") {

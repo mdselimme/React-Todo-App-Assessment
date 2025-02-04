@@ -69,8 +69,8 @@ const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
                     body: JSON.stringify(body),
                 }
             );
-
             const data = await resp.json();
+            console.log(data, resp)
             if (resp.ok) {
                 hadleCloseFunc();
                 setDataLoad(true);
@@ -94,7 +94,7 @@ const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "Failed to send request. Check your network connection.",
+                text: `${error.message}`,
             });
         }
     };
