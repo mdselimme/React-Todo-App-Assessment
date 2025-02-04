@@ -29,7 +29,6 @@ const LogIn = () => {
                 body: JSON.stringify(body)
             });
             const data = await resp.json();
-            console.log(data)
             if (data.detail[0].input.email) {
                 localStorage.setItem("auth", JSON.stringify({ email: data.detail[0].input.email }));
                 navigate("/home");
@@ -59,7 +58,7 @@ const LogIn = () => {
             <div className="auth-main-box">
                 <form onSubmit={(e) => logInAccountFunc(e)} className="input-box">
 
-                    <TextField name="email" label="Email" variant="outlined" />
+                    <TextField name="email" label="Username" variant="outlined" />
 
 
                     <TextField name="password" label="Password" variant="outlined" />

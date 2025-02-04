@@ -21,7 +21,6 @@ const AuthProvider = ({ children }) => {
   }, [dataLoad])
 
 
-
   const value = {
     todos, setTodos, setAuthBtnShow, authBtnShow, setDataLoad, authData, setAuthData, dataLoad
   };

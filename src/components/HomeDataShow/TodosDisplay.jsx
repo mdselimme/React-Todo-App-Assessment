@@ -175,7 +175,7 @@ const TodosDisplay = () => {
 
                   <TableCell align="center">{idx + 1}</TableCell>
                   <TableCell align="center">{td.title}</TableCell>
-                  <TableCell align="center">{td.description}</TableCell>
+                  <TableCell sx={{ width: "30%" }} align="center">{td.description}</TableCell>
                   <TableCell align="center">{td.deadline}</TableCell>
                   <TableCell align="center">{td.priority}</TableCell>
                   <TableCell align="center">

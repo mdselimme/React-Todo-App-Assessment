@@ -153,7 +153,9 @@ const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
                                     </Select>
                                 </FormControl>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DateTimePicker name="deadline" value={dayjs(idTodo?.deadline)} />
+                                    <DateTimePicker name="deadline" value={dayjs(idTodo?.deadline)}
+                                        minDate={dayjs().add(1, "day").startOf("day")}
+                                    />
                                 </LocalizationProvider>
                                 <Button
                                     style={{ padding: "10px 0" }}

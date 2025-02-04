@@ -137,7 +137,8 @@ const ModalComponent = ({ open, handleClose }) => {
                   </Select>
                 </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker name="deadline" defaultValue={dayjs()} />
+                  <DateTimePicker name="deadline" defaultValue={dayjs()}
+                    minDate={dayjs().add(1, "day").startOf("day")} />
                 </LocalizationProvider>
                 <Button
                   style={{ padding: "10px 0" }}

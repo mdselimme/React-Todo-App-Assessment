@@ -4,10 +4,12 @@ import ModalComponent from "../Modal/ModalComponent";
 import { Link, useNavigate } from "react-router";
 import TodosDisplay from "./TodosDisplay";
 import useAuth from "../../AuthProvider/useAuth";
+import UpdateProfileModal from "./UpdateProfileModal";
 
 const HomeDataShow = () => {
   const navigate = useNavigate();
-
+  const [addUpdatModBtn, setAddUpdatModBtn] = useState(null);
+  const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -19,9 +21,18 @@ const HomeDataShow = () => {
     const data = JSON.parse(localStorage.getItem("auth"));
     if (data) {
       handleOpen();
+      setAddUpdatModBtn("addModal")
     } else {
       navigate("/login");
     }
+  };
+
+  const updateProfileModalFunc = async () => {
+    const resp = await fetch(`https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/profile/${authData?.email}`)
+    const result = await resp.json();
+    setUser(result);
+    handleOpen();
+    setAddUpdatModBtn(null);
   };
 
   return (
@@ -37,13 +48,13 @@ const HomeDataShow = () => {
           Add A Task
         </Button>
         {
-          authBtnShow ? <Button onClick={handleOpen} variant="contained" size="large">
+          authBtnShow ? <Button onClick={updateProfileModalFunc} variant="contained" size="large">
             Update Profile
           </Button> : ""
         }
       </div>
       <div>
-        {authData && <ModalComponent open={open} handleClose={handleClose}></ModalComponent>}
+        {authData && addUpdatModBtn === "addModal" ? <ModalComponent open={open} handleClose={handleClose}></ModalComponent> : <UpdateProfileModal user={user} open={open} handleClose={handleClose}></UpdateProfileModal>}
       </div>
       <div>{
         authBtnShow ? <TodosDisplay></TodosDisplay> : <Typography
