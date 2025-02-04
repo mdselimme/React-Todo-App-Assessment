@@ -13,7 +13,6 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (data.email) {
-      console.log("data", data)
       setAuthData(data);
     } else {
       setAuthData(null)

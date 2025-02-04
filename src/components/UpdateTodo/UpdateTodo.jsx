@@ -58,8 +58,6 @@ const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
             is_completed
         };
 
-        console.log("body", body);
-
         try {
             const resp = await fetch(
                 `https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todo/${todoId}`,

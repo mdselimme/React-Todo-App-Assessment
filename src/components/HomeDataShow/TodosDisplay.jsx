@@ -10,6 +10,7 @@ import { Button, Typography } from "@mui/material";
 import Swal from "sweetalert2";
 import useAuth from "../../AuthProvider/useAuth";
 import UpdateTodo from "../UpdateTodo/UpdateTodo";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const TodosDisplay = () => {
 
@@ -19,6 +20,7 @@ const TodosDisplay = () => {
   const handleClose = () => setOpen(false);
   const [todoId, setTodoId] = useState(null);
 
+  // Fetch Data Function 
   const fetchData = async () => {
     const data = JSON.parse(localStorage.getItem("auth"));
     try {
@@ -35,11 +37,14 @@ const TodosDisplay = () => {
     } catch (error) {
       console.log(error)
     }
-  }
+  };
+
+  // fetch side effect 
   useEffect(() => {
     fetchData();
   }, [dataLoad]);
 
+  // Data Delete Id 
   const handleDeleteData = async (id) => {
     console.log("delete")
     try {
@@ -59,18 +64,84 @@ const TodosDisplay = () => {
           timer: 1500
         });
       }
-    } catch (err) {
-      console.log(err)
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to send request. Check your network connection.",
+      });
     }
   };
 
+  // update modata id 
   const updateModalOpen = (id) => {
     setTodoId(id);
     handleOpen();
   };
 
+  // modal close func 
   const hadleCloseFunc = () => {
     handleClose();
+  };
+
+  const updateCompleteFunc = async speId => {
+    // find data 
+    const data = todos.find((td) => td.id === speId);
+    // Task Completed body 
+    const body = {
+      title: data.title,
+      description: data.description,
+      deadline: data.deadline,
+      priority: data.priority,
+      is_completed: true,
+    };
+    try {
+      const resp = await fetch(
+        `https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todo/${speId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      const data = await resp.json();
+      if (resp.ok) {
+
+        setDataLoad(true);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Task Completed Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.message || "Something went wrong!",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to send request. Check your network connection.",
+      });
+    }
+  }
+
+  // Completed task message show 
+  const taskCompleteShow = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Sucessfully",
+      text: "Task Already Completed.",
+      showConfirmButton: false,
+    });
   }
 
   return (
@@ -108,8 +179,10 @@ const TodosDisplay = () => {
                   <TableCell align="center">{td.priority}</TableCell>
                   <TableCell align="center">
                     <Button onClick={() => handleDeleteData(td.id)} sx={{ padding: "5px 10px", marginRight: "5px" }} type="submit" variant="contained">Delete</Button>
-                    <Button onClick={() => updateModalOpen(td.id)} sx={{ padding: "5px 10px", marginRight: "5px" }} type="submit" variant="contained">Update</Button>
-                    <Button sx={{ padding: "5px 10px" }} type="submit" variant="contained">Complete</Button>
+                    {
+                      td.is_completed === true ? <Button onClick={taskCompleteShow} sx={{ padding: "5px 10px", background: "green" }} type="submit" variant="contained"><CheckCircleIcon /></Button> : <><Button onClick={() => updateModalOpen(td.id)} sx={{ padding: "5px 10px", marginRight: "5px" }} type="submit" variant="contained">Update</Button>
+                        <Button onClick={() => updateCompleteFunc(td.id)} sx={{ padding: "5px 10px" }} type="submit" variant="contained">Complete</Button></>
+                    }
                   </TableCell>
                 </TableRow>
               ))}
