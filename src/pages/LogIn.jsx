@@ -28,6 +28,7 @@ const LogIn = () => {
                 body: JSON.stringify(body)
             });
             const data = await resp.json();
+            console.log(data)
             if(data.detail[0].input.email){
                 localStorage.setItem("auth", JSON.stringify({email:data.detail[0].input.email}));
                 navigate("/home");

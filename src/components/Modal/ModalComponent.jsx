@@ -1,8 +1,12 @@
-import { Box, Button, Modal, TextField } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField,  } from "@mui/material";
 import { bool, func } from "prop-types";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import useAuth from "../../AuthProvider/useAuth";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from "dayjs";
+import { useState } from "react";
 
 
 const ModalComponent = ({ open, handleClose }) => {
@@ -18,52 +22,68 @@ const ModalComponent = ({ open, handleClose }) => {
   };
 
   const {setDataLoad} = useAuth();
-
+  
   const navigate = useNavigate();
 
+  // Add to Task Data Function 
   const addToDoTaskDataFunc = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const id = Date.now();
-    const title = form.title.value;
-    const description = form.description.value;
-    const priority = parseInt(form.priority.value);
-    const hours = 3600 * parseInt(form.hours.value);
-    const minutes = 60 * parseInt(form.minutes.value);
-    const seconds = parseInt(form.seconds.value);
-    const deadline = hours + minutes + seconds;
-    const body = {
-      id,
-      title,
-      description,
-      deadline,
-      priority,
-    };
-    console.log(body);
-    const resp = await fetch("https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todo", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+  e.preventDefault();
+  // find value from input field 
+  const form = e.target;
+  const title = form.title.value;
+  const description = form.description.value;
+  const deadlineInput = form.deadline.value;
+  const deadline = new Date(deadlineInput).toISOString();
+  const priority = form.priority.value; 
+
+  // data object 
+  const body = {
+    title,
+    description,
+    deadline,
+    priority,
+  };
+
+  try {
+    const resp = await fetch(
+      "https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todo",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
     const data = await resp.json();
-    console.log(data.id)
-    if (data.id) {
+    if (resp.ok) {
       navigate("/");
       handleClose();
       setDataLoad(true);
       Swal.fire({
-        position:"top-end",
+        position: "top-end",
         icon: "success",
         title: "Data Added Successfully",
         showConfirmButton: false,
         timer: 1500,
       });
-      
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: data.message || "Something went wrong!",
+      });
     }
-    e.target.reset();
-  };
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Failed to send request. Check your network connection.",
+    });
+  }
+
+  e.target.reset();
+};
 
   return (
     <div>
@@ -93,43 +113,30 @@ const ModalComponent = ({ open, handleClose }) => {
                   label="Task Description"
                   variant="outlined"
                 />
-                <TextField
-                  required
-                  name="priority"
-                  label="Task Priority 1 - 5"
-                  variant="outlined"
-                />
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <TextField
-                    required
-                    name="hours"
-                    label="Hours"
-                    defaultValue={"0"}
-                    type="number"
-                    style={{ width: "180px" }}
-                    variant="outlined"
-                  />
-                  <TextField
-                    required
-                    name="minutes"
-                    label="Minutes"
-                    defaultValue={"0"}
-                    type="number"
-                    style={{ width: "180px" }}
-                    variant="outlined"
-                  />
-                  <TextField
-                    required
-                    name="seconds"
-                    label="Seconds"
-                    defaultValue={"0"}
-                    type="number"
-                    style={{ width: "180px" }}
-                    variant="outlined"
-                  />
-                </div>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Priority</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Priority"
+                        name="priority"
+                        defaultValue={1}
+                      >
+                        <MenuItem value="1">1</MenuItem>
+                        <MenuItem value="2">2</MenuItem>
+                        <MenuItem value="3">3</MenuItem>
+                        <MenuItem value="4">4</MenuItem>
+                        <MenuItem value="5">5</MenuItem>
+                        <MenuItem value="6">6</MenuItem>
+                        <MenuItem value="7">7</MenuItem>
+                        <MenuItem value="8">8</MenuItem>
+                        <MenuItem value="9">9</MenuItem>
+                        <MenuItem value="10">10</MenuItem>
+                      </Select>
+                    </FormControl>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateTimePicker name="deadline" defaultValue={dayjs()} />
+                </LocalizationProvider>
                 <Button
                   style={{ padding: "10px 0" }}
                   type="submit"

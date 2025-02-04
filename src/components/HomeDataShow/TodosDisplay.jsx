@@ -12,9 +12,28 @@ import useAuth from "../../AuthProvider/useAuth";
 
 const TodosDisplay = () => {
 
-  const {todos, setDataLoad, authData} = useAuth();
+  const {todos, setDataLoad,setTodos,setAuthData,dataLoad} = useAuth();
 
-  console.log(todos)
+  const fetchData = async () =>{
+    const data = JSON.parse(localStorage.getItem("auth"));
+    try{
+      if(data){
+        const resp = await fetch('https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todos');
+        const data = await resp.json();
+        setTodos(data);
+        setDataLoad(false);
+    }
+    else{
+      setTodos([])
+      setAuthData(null);
+    }
+  }catch(error){
+    console.log(error)
+  }
+}
+   useEffect(()=>{
+      fetchData();
+  },[dataLoad]);
 
   const handleDeleteData = async (id) =>{
     console.log("delete")
@@ -23,6 +42,8 @@ const TodosDisplay = () => {
     })
     const data = await resp.json();
     if(data.message){
+      const data = todos.filter((dt)=> dt.id !== id);
+      setTodos(data);
       setDataLoad(true);
       Swal.fire({ 
             position: "top-end",

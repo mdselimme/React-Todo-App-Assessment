@@ -10,34 +10,23 @@ const AuthProvider = ({ children }) => {
   const [authData, setAuthData] = useState(null);
   const [todos, setTodos] = useState([]);
   const data = JSON.parse(localStorage.getItem("auth"));
-  console.log(data);
   
   useEffect(()=>{
-    const data = JSON.parse(localStorage.getItem("auth"));
-    if(data){
+    if(data.email){
+      console.log("data" , data)
       setAuthData(data);
     }else{
       setAuthData(null)
     }
-  }, [])
+  }, [dataLoad])
 
-  useEffect(()=>{
-    if(data){
-    const fetchData = async () =>{
-    const resp = await fetch('https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todos');
-    const data = await resp.json();
-    setTodos(data)
-    }
-    fetchData();
-    }else{
-      setTodos([])
-    }
-  },[dataLoad]);
+  console.log("authdata ", authData)
+
 
 
  
   const value = {
-    todos,setTodos,setAuthBtnShow,authBtnShow,setDataLoad,authData
+    todos,setTodos,setAuthBtnShow,authBtnShow,setDataLoad,authData,setAuthData,dataLoad
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
