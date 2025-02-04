@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 
 
-const ModalComponent = ({ open, handleClose }) => {
+const AddToDoTaskModal = ({ open, handleClose }) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -156,9 +156,9 @@ const ModalComponent = ({ open, handleClose }) => {
   );
 };
 
-ModalComponent.propTypes = {
+AddToDoTaskModal.propTypes = {
   open: bool,
   handleClose: func,
 };
 
-export default ModalComponent;
+export default AddToDoTaskModal;

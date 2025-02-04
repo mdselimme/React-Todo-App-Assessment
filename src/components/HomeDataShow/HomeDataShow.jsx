@@ -1,6 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
-import ModalComponent from "../Modal/ModalComponent";
+import AddToDoTaskModal from "../addToDoTaskModal/addToDoTaskModal";
 import { Link, useNavigate } from "react-router";
 import TodosDisplay from "./TodosDisplay";
 import useAuth from "../../AuthProvider/useAuth";
@@ -54,7 +54,7 @@ const HomeDataShow = () => {
         }
       </div>
       <div>
-        {authData && addUpdatModBtn === "addModal" ? <ModalComponent open={open} handleClose={handleClose}></ModalComponent> : <UpdateProfileModal user={user} open={open} handleClose={handleClose}></UpdateProfileModal>}
+        {authData && addUpdatModBtn === "addModal" ? <AddToDoTaskModal open={open} handleClose={handleClose}></AddToDoTaskModal> : <UpdateProfileModal user={user} open={open} handleClose={handleClose}></UpdateProfileModal>}
       </div>
       <div>{
         authBtnShow ? <TodosDisplay></TodosDisplay> : <Typography
