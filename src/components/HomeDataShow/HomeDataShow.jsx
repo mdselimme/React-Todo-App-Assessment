@@ -11,7 +11,7 @@ const HomeDataShow = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const {authData,authBtnShow} = useAuth();
+  const { authData, authBtnShow } = useAuth();
 
   const addTaskHandleButton = () => {
     const data = JSON.parse(localStorage.getItem("auth"));
@@ -36,8 +36,8 @@ const HomeDataShow = () => {
         </Button>
         {
           authBtnShow ? <Button onClick={handleOpen} variant="contained" size="large">
-          Update Profile
-        </Button> : ""
+            Update Profile
+          </Button> : ""
         }
       </div>
       <div>
@@ -52,7 +52,7 @@ const HomeDataShow = () => {
           You can't see your task ! Please Logged First <Link to={"/login"}>&#8594;</Link>
         </Typography>
       }
-      
+
       </div>
     </section>
   );

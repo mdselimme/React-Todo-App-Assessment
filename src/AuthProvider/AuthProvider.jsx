@@ -10,23 +10,20 @@ const AuthProvider = ({ children }) => {
   const [authData, setAuthData] = useState(null);
   const [todos, setTodos] = useState([]);
   const data = JSON.parse(localStorage.getItem("auth"));
-  
-  useEffect(()=>{
-    if(data.email){
-      console.log("data" , data)
+
+  useEffect(() => {
+    if (data.email) {
+      console.log("data", data)
       setAuthData(data);
-    }else{
+    } else {
       setAuthData(null)
     }
   }, [dataLoad])
 
-  console.log("authdata ", authData)
 
 
-
- 
   const value = {
-    todos,setTodos,setAuthBtnShow,authBtnShow,setDataLoad,authData,setAuthData,dataLoad
+    todos, setTodos, setAuthBtnShow, authBtnShow, setDataLoad, authData, setAuthData, dataLoad
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
