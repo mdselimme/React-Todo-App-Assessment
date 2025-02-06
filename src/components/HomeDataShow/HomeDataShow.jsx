@@ -28,6 +28,7 @@ const HomeDataShow = () => {
     }
   };
 
+  // Update Modal and Profile Data Func 
   const updateProfileModalFunc = async () => {
     const resp = await fetch(`https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/profile/${authData?.email}`)
     const result = await resp.json();
