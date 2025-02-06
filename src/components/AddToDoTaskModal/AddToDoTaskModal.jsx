@@ -21,7 +21,7 @@ const AddToDoTaskModal = ({ open, handleClose }) => {
     boxShadow: 24,
   };
 
-  const { setDataLoad } = useAuth();
+  const { setDataLoad, setSortTasks, setSortStatus } = useAuth();
 
   const navigate = useNavigate();
 
@@ -59,6 +59,8 @@ const AddToDoTaskModal = ({ open, handleClose }) => {
       if (resp.ok) {
         navigate("/");
         handleClose();
+        setSortStatus("all");
+        setSortTasks("default");
         setDataLoad(true);
         Swal.fire({
           icon: "success",
