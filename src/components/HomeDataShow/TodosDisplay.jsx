@@ -16,40 +16,12 @@ import DataSortStatus from "./DataSortStatus";
 
 const TodosDisplay = () => {
 
-  const { todos, setDataLoad, setTodos, setAuthData, dataLoad } = useAuth();
+  const { todos, setDataLoad, setTodos } = useAuth();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [todoId, setTodoId] = useState(null);
-  const [todosSort, setTodosSort] = useState();
 
-  // Fetch Data Function 
-  const fetchData = async () => {
-    const data = JSON.parse(localStorage.getItem("auth"));
-    try {
-      if (data) {
-        const resp = await fetch('https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todos');
-        const data = await resp.json();
-        setTodos(data);
-        setDataLoad(false);
-      }
-      else {
-        setTodos([])
-        setAuthData(null);
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: `${error.message}`,
-        text: "Failed to send request. Check your network connection.",
-      });
-    }
-  };
-
-  // fetch side effect 
-  useEffect(() => {
-    fetchData();
-  }, [dataLoad]);
 
   // Data Delete Id 
   const handleDeleteData = async (id) => {
@@ -162,7 +134,7 @@ const TodosDisplay = () => {
           No Task Added ! Please Add an Task &#8594;
         </Typography> :
           <>
-            <DataSortStatus todos={todos} setTodos={setTodos}></DataSortStatus>
+            <DataSortStatus></DataSortStatus>
             <TableContainer sx={{ marginTop: "30px", border: "1px solid orange", marginBottom: "50px" }} component={Paper}>
               <Table sx={{ minWidth: "350px" }} aria-label="simple table">
                 <TableHead>

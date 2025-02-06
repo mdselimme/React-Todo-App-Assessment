@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export const AuthContext = createContext(null);
 
@@ -9,7 +10,8 @@ const AuthProvider = ({ children }) => {
   const [dataLoad, setDataLoad] = useState(false);
   const [authData, setAuthData] = useState(null);
   const [todos, setTodos] = useState([]);
-
+  const [sortTasks, setSortTasks] = useState("default");
+  const [sortStatus, setSortStatus] = useState("all");
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("auth"));
@@ -18,11 +20,49 @@ const AuthProvider = ({ children }) => {
     } else {
       setAuthData(null)
     }
-  }, [dataLoad])
+  }, [dataLoad]);
+
+  // Fetch Data Function 
+  const fetchData = async () => {
+    const ldata = JSON.parse(localStorage.getItem("auth"));
+    try {
+      if (ldata) {
+        const resp = await fetch('https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todos');
+        const data = await resp.json();
+        setTodos(data);
+        setDataLoad(false);
+      }
+      else {
+        setTodos([])
+        setAuthData(null);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: `${error.message}`,
+        text: "Failed to send request. Check your network connection.",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const sortedTasks = [...todos].sort((a, b) => {
+      if (sortTasks === "ascending") return a.priority - b.priority;
+      if (sortTasks === "descending") return b.priority - a.priority;
+      return a.id - b.id;
+    });
+    setTodos(sortedTasks);
+  }, [sortTasks])
+
+  // fetch side effect 
+  useEffect(() => {
+    fetchData();
+  }, [dataLoad]);
+
 
 
   const value = {
-    todos, setTodos, setAuthBtnShow, authBtnShow, setDataLoad, authData, setAuthData, dataLoad
+    todos, setTodos, setAuthBtnShow, authBtnShow, setSortTasks, sortTasks, setDataLoad, authData, setAuthData, dataLoad, sortStatus, setSortStatus
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
