@@ -7,29 +7,21 @@ const DataSortStatus = () => {
 
 
 
-    const { setSortTasks, sortTasks } = useAuth();
+    const { setSortTasks, sortTasks, sortStatus, setSearchQuery, setSortStatus } = useAuth();
 
 
-    // setTodos(sortedTasks);
-
-    // const searchInputValue = e => {
-    //     const inpVal = e.target.value;
-    //     const searchData = todos.filter(task => task.title.toLowerCase().includes(inpVal.toLowerCase()));
-    //     console.log(searchData)
-    //     setTodos(searchData);
-    // }
 
     return (
-        <Box component="section" marginTop={"20px"} display={"flex"} justifyContent={"left"} alignItems={"center"} sx={{ p: 2, border: '1px dashed grey' }}>
+        <Box component="section" marginTop={"20px"} display={"flex"} justifyContent={"space-evenly"} alignItems={"center"} sx={{ p: 2, border: '1px dashed grey' }}>
             <Box component={"div"} display={"flex"} justifyContent={"left"} alignItems={"center"}>
-                <Typography sx={{ fontSize: "16px", fontWeight: "600" }}>
+                <Typography sx={{ fontSize: "16px", fontWeight: "600", marginRight: "8px" }}>
                     Search By Title :
                 </Typography>
-                <TextField type="text" id="outlined-basic" onInput={(e) => searchInputValue(e)} label="Type your Task Title" variant="outlined" ></TextField>
+                <TextField type="text" id="outlined-basic" onInput={(e) => setSearchQuery(e.target.value)} label="Type your Task Title" variant="outlined" ></TextField>
             </Box>
             <Box display={"flex"} justifyContent={"left"} alignItems={"center"} marginLeft={"10px"}>
-                <Typography sx={{ fontSize: "16px", fontWeight: "600" }}>
-                    Or :
+                <Typography sx={{ fontSize: "16px", fontWeight: "600", marginRight: "8px" }}>
+                    Or Priority :
                 </Typography>
                 <FormControl sx={{ minWidth: 200 }} >
                     <InputLabel>Sort by Priority</InputLabel>
@@ -45,15 +37,15 @@ const DataSortStatus = () => {
                 </FormControl>
             </Box>
             <Box display={"flex"} justifyContent={"left"} alignItems={"center"} marginLeft={"10px"}>
-                <Typography sx={{ fontSize: "16px", fontWeight: "600" }}>
-                    Or :
+                <Typography sx={{ fontSize: "16px", fontWeight: "600", marginRight: "8px" }}>
+                    Or Status :
                 </Typography>
                 <FormControl sx={{ minWidth: 200 }} >
                     <InputLabel>Sort by Status</InputLabel>
                     <Select
-                        value={sortTasks}
-                        onChange={(e) => setSortTasks(e.target.value)}
-                        label="Sort by Priority"
+                        value={sortStatus}
+                        onChange={(e) => setSortStatus(e.target.value)}
+                        label="Sort by Status"
                     >
                         <MenuItem value="all">All</MenuItem>
                         <MenuItem value="completed">Completed</MenuItem>

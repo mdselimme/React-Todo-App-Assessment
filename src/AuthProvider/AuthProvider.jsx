@@ -12,6 +12,8 @@ const AuthProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
   const [sortTasks, setSortTasks] = useState("default");
   const [sortStatus, setSortStatus] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("auth"));
@@ -29,11 +31,19 @@ const AuthProvider = ({ children }) => {
       if (ldata) {
         const resp = await fetch('https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todos');
         const data = await resp.json();
-        setTodos(data);
+        const staSortTasks = [...data].filter((task) => {
+          if (sortStatus === "completed") return task.is_completed;
+          if (sortStatus === "incompleted") return !task.is_completed;
+          if (searchQuery && !task.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+            return false;
+          }
+          return true;
+        });
+        setTodos(staSortTasks);
         setDataLoad(false);
       }
       else {
-        setTodos([])
+        setTodos([]);
         setAuthData(null);
       }
     } catch (error) {
@@ -45,6 +55,12 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // fetch side effect 
+  useEffect(() => {
+    fetchData();
+  }, [dataLoad, sortStatus, searchQuery]);
+
+  // Sort by Priority Method 
   useEffect(() => {
     const sortedTasks = [...todos].sort((a, b) => {
       if (sortTasks === "ascending") return a.priority - b.priority;
@@ -52,17 +68,11 @@ const AuthProvider = ({ children }) => {
       return a.id - b.id;
     });
     setTodos(sortedTasks);
-  }, [sortTasks])
-
-  // fetch side effect 
-  useEffect(() => {
-    fetchData();
-  }, [dataLoad]);
-
+  }, [sortTasks]);
 
 
   const value = {
-    todos, setTodos, setAuthBtnShow, authBtnShow, setSortTasks, sortTasks, setDataLoad, authData, setAuthData, dataLoad, sortStatus, setSortStatus
+    todos, setTodos, setAuthBtnShow, authBtnShow, setSearchQuery, searchQuery, setSortTasks, sortTasks, setDataLoad, authData, setAuthData, dataLoad, sortStatus, setSortStatus
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

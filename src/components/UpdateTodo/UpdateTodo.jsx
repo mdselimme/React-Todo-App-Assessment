@@ -3,7 +3,6 @@ import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import useAuth from "../../AuthProvider/useAuth";
-import { useState } from "react";
 import Swal from "sweetalert2";
 
 const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
@@ -38,7 +37,6 @@ const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
         const deadline = new Date(deadlineInput);
         const priority = form.priority.value;
         const is_completed = false;
-        console.log(priority)
 
         if (isNaN(deadline)) {
             Swal.fire({
@@ -70,7 +68,6 @@ const UpdateTodo = ({ open, handleClose, hadleCloseFunc, todoId }) => {
                 }
             );
             const data = await resp.json();
-            console.log(data, resp)
             if (resp.ok) {
                 hadleCloseFunc();
                 setDataLoad(true);

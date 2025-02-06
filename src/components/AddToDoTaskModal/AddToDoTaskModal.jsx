@@ -44,8 +44,6 @@ const AddToDoTaskModal = ({ open, handleClose }) => {
       priority,
     };
 
-    console.log("add to do", body)
-
     try {
       const resp = await fetch(
         "https://5nvfy5p7we.execute-api.ap-south-1.amazonaws.com/dev/todo",
@@ -63,7 +61,6 @@ const AddToDoTaskModal = ({ open, handleClose }) => {
         handleClose();
         setDataLoad(true);
         Swal.fire({
-          position: "top-end",
           icon: "success",
           title: "Data Added Successfully",
           showConfirmButton: false,

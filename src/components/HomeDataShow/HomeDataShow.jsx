@@ -10,6 +10,7 @@ const HomeDataShow = () => {
   const navigate = useNavigate();
   const [addUpdatModBtn, setAddUpdatModBtn] = useState(null);
   const [user, setUser] = useState(null);
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,6 +35,8 @@ const HomeDataShow = () => {
     handleOpen();
     setAddUpdatModBtn(null);
   };
+
+
 
   return (
     <section className="container">

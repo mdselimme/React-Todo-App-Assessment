@@ -1,5 +1,4 @@
 import { Box, Button, Modal, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
 import useAuth from '../../AuthProvider/useAuth';
 import Swal from 'sweetalert2';
 
@@ -46,16 +45,13 @@ const UpdateProfileModal = ({ open, handleClose, user }) => {
             const result = await resp.json();
             if (result.message) {
                 handleClose();
-
                 Swal.fire({
-                    position: "top-end",
                     icon: "success",
                     title: "Profile Updated Successfully",
                     showConfirmButton: false,
                     timer: 1500,
                 });
             } else {
-                console.error('API Response:', data);
                 handleClose();
                 Swal.fire({
                     icon: "error",
@@ -64,7 +60,11 @@ const UpdateProfileModal = ({ open, handleClose, user }) => {
                 });
             }
         } catch (err) {
-            console.log(err)
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: err.message || "Something went wrong!",
+            });
         }
     };
 
